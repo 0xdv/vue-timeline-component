@@ -1,6 +1,6 @@
 export default (config) => selection => {
     let {
-        showCursor,
+        //showCursor,
         timeScale,
         height,
     } = config
