@@ -1,10 +1,11 @@
 {
   "name": "vue-timeline-component",
   "version": "0.1.0",
-  "private": true,
+  "main": "dist/vue-timeline-component.common.js",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --target lib --name VueTimeline",
+    "build": "vue-cli-service build --target lib ./src/components/VueTimeline.vue",
+    "dev": "vue-cli-service build --watch --target lib ./src/components/VueTimeline.vue",
     "lint": "vue-cli-service lint"
   },
   "devDependencies": {
@@ -35,5 +36,8 @@
   "browserslist": [
     "> 1%",
     "last 2 versions"
-  ]
+  ],
+  "dependencies": {
+    "d3": "^5.15.0"
+  }
 }
