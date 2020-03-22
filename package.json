@@ -8,6 +8,16 @@
     "dev": "vue-cli-service build --watch --target lib ./src/components/VueTimeline.vue",
     "lint": "vue-cli-service lint"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/0xdv/vue-timeline-component"
+  },
+  "homepage": "https://github.com/0xdv/vue-timeline-component",
+  "bugs": {
+    "url": "https://github.com/0xdv/vue-timeline-component/issues"
+  },
+  "author": "0xdv <0xc0ffec0de@gmail.com>",
+  "license": "MIT",
   "devDependencies": {
     "core-js": "^3.6.4",
     "vue": "^2.6.11",
