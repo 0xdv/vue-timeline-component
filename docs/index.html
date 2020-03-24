@@ -1,0 +1,46 @@
+<html>
+    <head>
+        <title>vue-timeline-component demo</title>
+        <script src="https://unpkg.com/vue"></script>
+        <!-- <script src="https://unpkg.com/vue-timeline-component"></script> -->
+        <script src="../dist/vue-timeline-component.umd.min.js"></script>
+        <style>
+            body {
+                font-family: 'Avenir', Helvetica, Arial, sans-serif;
+                text-align: center;
+                background-color: #f9f9f9;
+            }
+        </style>
+    </head>
+    <body>
+        <h3>vue-timeline-component demo</h3>
+        <div id="app">
+            <demo :data="events"></demo>
+        </div>
+          
+        <script>
+          new Vue({
+            components: {
+              demo: window['vue-timeline-component']
+            },
+            data() {
+                return {
+                    events: [{
+                        name: "event 1",
+                        start: new Date(2020, 1,1),
+                        end: new Date(2020, 1,4),
+                    },{
+                        name: "event 2",
+                        start: new Date(2020, 1,2),
+                        end: new Date(2020, 1,5),
+                    },{
+                        name: "event 3",
+                        start: new Date(2020, 1,3),
+                        end: new Date(2020, 1,10),
+                    }]
+                }
+            }
+          }).$mount('#app')
+        </script>
+    </body>
+</html>

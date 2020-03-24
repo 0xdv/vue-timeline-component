@@ -8,13 +8,17 @@
 ```js
 npm install vue-timeline-component
 ```
+or
+```html
+<script src="https://unpkg.com/vue-timeline-component"></script>
+```
 
 ## Usage
 
 ```html
 <template>
   <div id="app">
-    <vue-timeline :data="data"></vue-timeline>
+    <vue-timeline :data="events"></vue-timeline>
   </div>
 </template>
 ```
@@ -30,12 +34,18 @@ export default {
   },
   data() {
     return {
-      data: [{
-          id: 1,
-          name: "example",
-          start: new Date(2001, 1,1),
-          end: new Date(2020, 1,1),
-          position: 5
+      events: [{
+          name: "event 1",
+          start: new Date(2020, 1,1),
+          end: new Date(2020, 1,4),
+      },{
+          name: "event 2",
+          start: new Date(2020, 1,2),
+          end: new Date(2020, 1,5),
+      },{
+          name: "event 3",
+          start: new Date(2020, 1,3),
+          end: new Date(2020, 1,10),
       }]
     }
   },
