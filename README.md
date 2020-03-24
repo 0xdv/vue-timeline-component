@@ -3,6 +3,8 @@
 [![npm package](https://img.shields.io/npm/v/vue-timeline-component.svg)](https://www.npmjs.org/package/vue-timeline-component)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/0xdv/vue-timeline-component/blob/master/LICENSE)
 
+## [Demo](https://0xdv.github.io/vue-timeline-component/index.html)
+
 ## Install
 
 ```js
