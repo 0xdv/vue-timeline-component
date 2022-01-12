@@ -11,6 +11,10 @@ export default {
     props: {
         data: {
             type: Array
+        },
+        config: {
+            type: Object,
+            default: () => {}
         }
     },
     mounted() {
@@ -25,7 +29,7 @@ export default {
                         left: 15,
                         right: 15
                     },
-                    //onEventClick: click
+                    onEventClick: this.config?.onEventClick
                 }))
     }
 }

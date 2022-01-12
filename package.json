@@ -1,6 +1,6 @@
 {
   "name": "vue-timeline-component",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "main": "dist/vue-timeline-component.umd.js",
   "scripts": {
     "serve": "vue-cli-service serve",
