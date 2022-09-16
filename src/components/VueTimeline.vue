@@ -14,13 +14,7 @@ export default {
         },
         config: {
             type: Object,
-            default: () => {}
-        }
-    },
-    mounted() {
-        d3.select('#timeline')
-            .datum(this.data)
-            .call(timeline({
+            default: () => {
                     widthResizable: true,
                     viewHeight: 300,
                     margin: {
@@ -30,7 +24,13 @@ export default {
                         right: 15
                     },
                     onEventClick: this.config?.onEventClick
-                }))
+                }
+        }
+    },
+    mounted() {
+        d3.select('#timeline')
+            .datum(this.data)
+            .call(timeline(this.config))
     }
 }
 </script>
