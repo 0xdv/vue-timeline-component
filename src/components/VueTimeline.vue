@@ -14,7 +14,8 @@ export default {
         },
         config: {
             type: Object,
-            default: () => {
+            default(){
+                return {
                     widthResizable: true,
                     viewHeight: 300,
                     margin: {
@@ -25,6 +26,7 @@ export default {
                     },
                     onEventClick: this.config?.onEventClick
                 }
+            }
         }
     },
     mounted() {
