@@ -48,6 +48,6 @@
     "last 2 versions"
   ],
   "dependencies": {
-    "d3": "^5.15.0"
+    "d3": "^7.6.1"
   }
 }
