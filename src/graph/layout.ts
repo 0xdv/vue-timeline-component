@@ -10,7 +10,7 @@ function intersects(event1: TimelineEvent, event2: TimelineEvent): boolean {
     return false;
   }
 
-  return (s2 < s1 && s1 < e2) || (s1 < s2 && s2 < e1);
+  return s1 < e2 && s2 < e1;
 }
 
 const layout = {
@@ -22,12 +22,16 @@ const layout = {
 
     const placed: TimelineEvent[] = [];
     data.forEach((e) => {
-      e.level = 0;
+      const occupiedLevels = new Set<number>();
       placed.forEach((p) => {
         if (intersects(e, p)) {
-          e.level = (e.level ?? 0) + 1;
+          occupiedLevels.add(p.level ?? 0);
         }
       });
+      e.level = 0;
+      while (occupiedLevels.has(e.level)) {
+        e.level++;
+      }
       placed.push(e);
     });
 
