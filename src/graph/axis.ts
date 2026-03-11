@@ -1,12 +1,14 @@
 import * as d3 from "d3";
 import type { ScaleTime } from "d3";
+import { romanCenturyLabel } from "./romanCenturyFormat";
 
 interface AxisConfig {
   timeScale: ScaleTime<number, number>;
   height: number;
+  romanCenturies?: boolean;
 }
 
-function format(date: Date): string {
+function format(date: Date, romanCenturies?: boolean): string {
   if (d3.timeDay(date) < date) {
     return d3.timeFormat("%I:%M")(date);
   }
@@ -19,12 +21,17 @@ function format(date: Date): string {
     return d3.timeFormat("%B")(date);
   }
 
+  if (romanCenturies) {
+    const roman = romanCenturyLabel(date);
+    if (roman) return roman;
+  }
+
   return d3.timeFormat("%Y")(date);
 }
 
 export default (config: AxisConfig) =>
   (selection: d3.Selection<any, any, any, any>): void => {
-    const { timeScale, height } = config;
+    const { timeScale, height, romanCenturies } = config;
 
     const axe = selection
       .selectAll<SVGGElement, any>(".axe")
@@ -32,7 +39,9 @@ export default (config: AxisConfig) =>
 
     const ay = d3
       .axisBottom(timeScale)
-      .tickFormat((d: Date | d3.NumberValue) => format(d as Date));
+      .tickFormat((d: Date | d3.NumberValue) =>
+        format(d as Date, romanCenturies),
+      );
 
     axe
       .enter()

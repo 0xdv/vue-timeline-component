@@ -22,4 +22,5 @@ export interface TimelineConfig {
   margin?: TimelineMargin;
   onEventClick?: (event: TimelineEvent) => void;
   showCursor?: boolean;
+  romanCenturies?: boolean;
 }

@@ -97,10 +97,11 @@ interface TimelineEvent {
 interface TimelineConfig {
   viewWidth?: number       // Default: 800
   viewHeight?: number      // Default: 300
-  widthResizable?: boolean // Default: true
+  widthResizable?: boolean  // Default: true
   margin?: { top: number; bottom: number; left: number; right: number }
   onEventClick?: (event: TimelineEvent) => void
-  showCursor?: boolean     // Default: true
+  showCursor?: boolean      // Default: true
+  romanCenturies?: boolean  // Default: false — show Roman numeral century labels (e.g. XIX, XX, XXI) for century-boundary years
 }
 ```
 

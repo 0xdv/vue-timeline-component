@@ -94,6 +94,7 @@ export default (config: TimelineConfig) => {
           axis({
             timeScale,
             height: height ?? 200,
+            romanCenturies: config.romanCenturies,
           }),
         )
         .call(
