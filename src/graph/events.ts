@@ -28,6 +28,9 @@ export default (config: EventsConfig) =>
         if (onEventClick) onEventClick(d);
       });
 
+    // Add tooltip
+    g.append("title").text((d: TimelineEvent) => d.name);
+
     g.append("rect")
       .attr("width", (d: TimelineEvent) =>
         d.end ? timeScale(d.end) - timeScale(d.start) : 10,
@@ -36,8 +39,28 @@ export default (config: EventsConfig) =>
       .attr("fill", "rgba(85, 187, 238, 0.2)")
       .attr("ry", 6);
 
+    // Clip path per event so text is clipped inside the span
+    g.append("clipPath")
+      .attr("id", (_d: TimelineEvent, i: number) => `event-clip-${i}`)
+      .append("rect")
+      .attr("width", (d: TimelineEvent) =>
+        d.end ? timeScale(d.end) - timeScale(d.start) : 10,
+      )
+      .attr("height", 20);
+
     g.append("text")
-      .attr("dy", "1em")
+      .attr(
+        "x",
+        (d: TimelineEvent) =>
+          (d.end ? timeScale(d.end) - timeScale(d.start) : 10) / 2,
+      )
+      .attr("y", 10)
+      .attr("text-anchor", "middle")
+      .attr("dominant-baseline", "central")
+      .attr(
+        "clip-path",
+        (_d: TimelineEvent, i: number) => `url(#event-clip-${i})`,
+      )
       .style("pointer-events", "none")
       .text((d: TimelineEvent) => d.name);
 
@@ -50,5 +73,13 @@ export default (config: EventsConfig) =>
       .selectAll("rect")
       .attr("width", (d: any) =>
         d.end ? timeScale(d.end) - timeScale(d.start) : 10,
+      );
+
+    events
+      .selectAll<SVGTextElement, TimelineEvent>("text")
+      .attr(
+        "x",
+        (d: TimelineEvent) =>
+          (d.end ? timeScale(d.end) - timeScale(d.start) : 10) / 2,
       );
   };
