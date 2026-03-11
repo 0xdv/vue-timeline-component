@@ -5,7 +5,7 @@ export type {
   TimelinePoint,
   TimelineConfig,
   TimelineMargin,
-} from "./graph/types";
+} from "./types";
 
 export { VueTimeline };
 

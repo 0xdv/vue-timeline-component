@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 import type { ScaleTime } from "d3";
-import { romanCenturyLabel } from "./romanCenturyFormat";
+import { romanCenturyLabel } from "../format/romanCentury";
 
 interface AxisConfig {
   timeScale: ScaleTime<number, number>;

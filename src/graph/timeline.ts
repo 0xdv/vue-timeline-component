@@ -1,12 +1,13 @@
 import * as d3 from "d3";
 import type { ScaleTime } from "d3";
 
-import { spansRenderer, pointsRenderer } from "./events";
-import axis from "./axis";
+import { spansRenderer } from "./renderers/spans";
+import { pointsRenderer } from "./renderers/points";
+import axis from "./renderers/axis";
 import zoom from "./zoom";
-import cursor from "./cursor";
+import cursor from "./renderers/cursor";
 import layout from "./layout";
-import type { TimelineConfig, TimelineSpan, TimelinePoint } from "./types";
+import type { TimelineConfig, TimelineSpan, TimelinePoint } from "../types";
 
 export default (config: TimelineConfig) => {
   function init(selection: d3.Selection<any, any, any, any>): void {

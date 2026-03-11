@@ -1,4 +1,4 @@
-import type { TimelineSpan, TimelinePoint } from "./types";
+import type { TimelineSpan, TimelinePoint } from "../types";
 
 function intersectsSpan(span1: TimelineSpan, span2: TimelineSpan): boolean {
   const s1 = span1.start;

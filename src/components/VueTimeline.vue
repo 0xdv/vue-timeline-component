@@ -6,7 +6,7 @@
 import { ref, onMounted, type PropType } from 'vue'
 import * as d3 from 'd3'
 import timeline from '../graph/timeline'
-import type { TimelineSpan, TimelinePoint, TimelineConfig } from '../graph/types'
+import type { TimelineSpan, TimelinePoint, TimelineConfig } from '../types'
 
 const props = defineProps({
   data: {
