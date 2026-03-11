@@ -1,10 +1,10 @@
-import type { TimelineEvent } from "./types";
+import type { TimelineSpan, TimelinePoint } from "./types";
 
-function intersects(event1: TimelineEvent, event2: TimelineEvent): boolean {
-  const s1 = event1.start;
-  const e1 = event1.end;
-  const s2 = event2.start;
-  const e2 = event2.end;
+function intersectsSpan(span1: TimelineSpan, span2: TimelineSpan): boolean {
+  const s1 = span1.start;
+  const e1 = span1.end;
+  const s2 = span2.start;
+  const e2 = span2.end;
 
   if (!e2 || !e1) {
     return false;
@@ -13,18 +13,26 @@ function intersects(event1: TimelineEvent, event2: TimelineEvent): boolean {
   return s1 < e2 && s2 < e1;
 }
 
+function intersectsPoint(point: TimelinePoint, span: TimelineSpan): boolean {
+  const d = point.date;
+  const s = span.start;
+  const e = span.end;
+  if (!e) return false;
+  return d >= s && d <= e;
+}
+
 const layout = {
-  generate(data: TimelineEvent[]): void {
-    data.forEach((e) => {
+  generate(spans: TimelineSpan[], points: TimelinePoint[] = []): void {
+    spans.forEach((e) => {
       e.duration = e.end ? e.end.getTime() - e.start.getTime() : 0;
     });
-    data.sort((a, b) => (b.duration ?? 0) - (a.duration ?? 0));
+    spans.sort((a, b) => (b.duration ?? 0) - (a.duration ?? 0));
 
-    const placed: TimelineEvent[] = [];
-    data.forEach((e) => {
+    const placed: TimelineSpan[] = [];
+    spans.forEach((e) => {
       const occupiedLevels = new Set<number>();
       placed.forEach((p) => {
-        if (intersects(e, p)) {
+        if (intersectsSpan(e, p)) {
           occupiedLevels.add(p.level ?? 0);
         }
       });
@@ -36,7 +44,22 @@ const layout = {
     });
 
     const maxLevel = 11;
-    data.forEach((e) => (e.position = maxLevel - (e.level ?? 0)));
+    spans.forEach((e) => (e.position = maxLevel - (e.level ?? 0)));
+
+    // Layout points: avoid overlapping with spans
+    points.forEach((pt) => {
+      const occupiedLevels = new Set<number>();
+      placed.forEach((span) => {
+        if (intersectsPoint(pt, span)) {
+          occupiedLevels.add(span.level ?? 0);
+        }
+      });
+      pt.level = 0;
+      while (occupiedLevels.has(pt.level)) {
+        pt.level++;
+      }
+      pt.position = maxLevel - (pt.level ?? 0);
+    });
   },
 };
 

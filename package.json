@@ -1,6 +1,6 @@
 {
   "name": "vue-timeline-component",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "type": "module",
   "description": "A Vue 3 timeline component powered by D3.js",
   "main": "./dist/vue-timeline-component.umd.js",

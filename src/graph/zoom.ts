@@ -6,7 +6,7 @@ interface ZoomConfig {
   view: d3.Selection<any, any, any, any>;
   draw: (
     timeScale: ScaleTime<number, number>,
-    onEventClick?: (event: any) => void,
+    onClick?: (item: any) => void,
     height?: number,
     showCursor?: boolean,
   ) => (selection: d3.Selection<any, any, any, any>) => void;

@@ -1,49 +1,49 @@
 import type * as d3 from "d3";
 import type { ScaleTime } from "d3";
-import type { TimelineEvent } from "./types";
+import type { TimelineSpan, TimelinePoint } from "./types";
 
-interface EventsConfig {
+interface RenderConfig {
   timeScale: ScaleTime<number, number>;
-  onEventClick?: (event: TimelineEvent) => void;
+  onClick?: (item: TimelineSpan | TimelinePoint) => void;
 }
 
-export default (config: EventsConfig) =>
-  (selection: d3.Selection<any, any, any, any>): void => {
-    const { timeScale, onEventClick } = config;
+export function spansRenderer(config: RenderConfig) {
+  return (selection: d3.Selection<any, any, any, any>): void => {
+    const { timeScale, onClick } = config;
 
-    const events = selection
-      .selectAll<SVGGElement, TimelineEvent>("g.event")
-      .data(selection.data()[0][0] as TimelineEvent[]);
+    const spans = selection
+      .selectAll<SVGGElement, TimelineSpan>("g.span")
+      .data(selection.data()[0][0] as TimelineSpan[]);
 
-    const g = events
+    const g = spans
       .enter()
       .append("g")
-      .classed("event", true)
+      .classed("span", true)
       .attr(
         "transform",
-        (d: TimelineEvent) =>
+        (d: TimelineSpan) =>
           `translate(${timeScale(d.start)} ${(d.position ?? 0) * 22})`,
       )
-      .on("click", (_event: MouseEvent, d: TimelineEvent) => {
-        if (onEventClick) onEventClick(d);
+      .on("click", (_event: MouseEvent, d: TimelineSpan) => {
+        if (onClick) onClick(d);
       });
 
     // Add tooltip
-    g.append("title").text((d: TimelineEvent) => d.name);
+    g.append("title").text((d: TimelineSpan) => d.name);
 
     g.append("rect")
-      .attr("width", (d: TimelineEvent) =>
+      .attr("width", (d: TimelineSpan) =>
         d.end ? timeScale(d.end) - timeScale(d.start) : 10,
       )
       .attr("height", 20)
       .attr("fill", "rgba(85, 187, 238, 0.2)")
       .attr("ry", 6);
 
-    // Clip path per event so text is clipped inside the span
+    // Clip path per span so text is clipped inside the span
     g.append("clipPath")
-      .attr("id", (_d: TimelineEvent, i: number) => `event-clip-${i}`)
+      .attr("id", (_d: TimelineSpan, i: number) => `span-clip-${i}`)
       .append("rect")
-      .attr("width", (d: TimelineEvent) =>
+      .attr("width", (d: TimelineSpan) =>
         d.end ? timeScale(d.end) - timeScale(d.start) : 10,
       )
       .attr("height", 20);
@@ -51,7 +51,7 @@ export default (config: EventsConfig) =>
     g.append("text")
       .attr(
         "x",
-        (d: TimelineEvent) =>
+        (d: TimelineSpan) =>
           (d.end ? timeScale(d.end) - timeScale(d.start) : 10) / 2,
       )
       .attr("y", 10)
@@ -59,15 +59,15 @@ export default (config: EventsConfig) =>
       .attr("dominant-baseline", "central")
       .attr(
         "clip-path",
-        (_d: TimelineEvent, i: number) => `url(#event-clip-${i})`,
+        (_d: TimelineSpan, i: number) => `url(#span-clip-${i})`,
       )
       .style("pointer-events", "none")
-      .text((d: TimelineEvent) => d.name);
+      .text((d: TimelineSpan) => d.name);
 
-    events
+    spans
       .attr(
         "transform",
-        (d: TimelineEvent) =>
+        (d: TimelineSpan) =>
           `translate(${timeScale(d.start)} ${(d.position ?? 0) * 22})`,
       )
       .selectAll("rect")
@@ -75,11 +75,67 @@ export default (config: EventsConfig) =>
         d.end ? timeScale(d.end) - timeScale(d.start) : 10,
       );
 
-    events
-      .selectAll<SVGTextElement, TimelineEvent>("text")
+    spans
+      .selectAll<SVGTextElement, TimelineSpan>("text")
       .attr(
         "x",
-        (d: TimelineEvent) =>
+        (d: TimelineSpan) =>
           (d.end ? timeScale(d.end) - timeScale(d.start) : 10) / 2,
       );
   };
+}
+
+export function pointsRenderer(config: RenderConfig) {
+  return (selection: d3.Selection<any, any, any, any>): void => {
+    const { timeScale, onClick } = config;
+
+    const dataArr = selection.data()[0];
+    const pointsData = (
+      dataArr.length > 1 ? dataArr[1] : []
+    ) as TimelinePoint[];
+
+    const points = selection
+      .selectAll<SVGGElement, TimelinePoint>("g.point")
+      .data(pointsData);
+
+    const g = points
+      .enter()
+      .append("g")
+      .classed("point", true)
+      .attr(
+        "transform",
+        (d: TimelinePoint) =>
+          `translate(${timeScale(d.date)} ${(d.position ?? 0) * 22})`,
+      )
+      .on("click", (_event: MouseEvent, d: TimelinePoint) => {
+        if (onClick) onClick(d);
+      });
+
+    // Add tooltip
+    g.append("title").text((d: TimelinePoint) => d.description);
+
+    // Diamond marker for point events
+    g.append("polygon")
+      .attr("points", "0,-8 8,0 0,8 -8,0")
+      .attr("transform", "translate(0, 10)")
+      .attr("fill", "rgba(238, 136, 85, 0.6)")
+      .attr("stroke", "rgba(238, 136, 85, 0.9)")
+      .attr("stroke-width", 1);
+
+    g.append("text")
+      .attr("x", 12)
+      .attr("y", 10)
+      .attr("dominant-baseline", "central")
+      .style("pointer-events", "none")
+      .style("font-size", "11px")
+      .text((d: TimelinePoint) => d.description);
+
+    points.attr(
+      "transform",
+      (d: TimelinePoint) =>
+        `translate(${timeScale(d.date)} ${(d.position ?? 0) * 22})`,
+    );
+  };
+}
+
+export default spansRenderer;

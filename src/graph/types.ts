@@ -1,8 +1,16 @@
-export interface TimelineEvent {
+export interface TimelineSpan {
   name: string;
   start: Date;
   end?: Date;
   duration?: number;
+  level?: number;
+  position?: number;
+  [key: string]: unknown;
+}
+
+export interface TimelinePoint {
+  date: Date;
+  description: string;
   level?: number;
   position?: number;
   [key: string]: unknown;
@@ -20,7 +28,7 @@ export interface TimelineConfig {
   viewHeight?: number;
   widthResizable?: boolean;
   margin?: TimelineMargin;
-  onEventClick?: (event: TimelineEvent) => void;
+  onClick?: (item: TimelineSpan | TimelinePoint) => void;
   showCursor?: boolean;
   romanCenturies?: boolean;
 }

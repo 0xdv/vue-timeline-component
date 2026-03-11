@@ -1,27 +1,29 @@
 import * as d3 from "d3";
 import type { ScaleTime } from "d3";
 
-import eventsRenderer from "./events";
+import { spansRenderer, pointsRenderer } from "./events";
 import axis from "./axis";
 import zoom from "./zoom";
 import cursor from "./cursor";
 import layout from "./layout";
-import type { TimelineConfig, TimelineEvent } from "./types";
+import type { TimelineConfig, TimelineSpan, TimelinePoint } from "./types";
 
 export default (config: TimelineConfig) => {
   function init(selection: d3.Selection<any, any, any, any>): void {
     selection.selectAll("svg").remove();
 
     const data = selection.data();
-    const eventData = data[0] as TimelineEvent[];
-    layout.generate(eventData);
+    const datum = data[0] as [TimelineSpan[], TimelinePoint[]];
+    const spanData = datum[0];
+    const pointData = datum[1] ?? [];
+    layout.generate(spanData, pointData);
 
     let {
       viewWidth = 800,
       viewHeight = 200,
       widthResizable = true,
       margin = { top: 0, bottom: 30, left: 15, right: 15 },
-      onEventClick,
+      onClick,
       showCursor = true,
     } = config;
 
@@ -32,18 +34,21 @@ export default (config: TimelineConfig) => {
     const width = viewWidth - margin.right - margin.left;
     const height = viewHeight - margin.top - margin.bottom;
 
+    const allDates: Date[] = [
+      ...spanData.map((e) => e.start),
+      ...spanData.map((e) => e.end ?? e.start),
+      ...pointData.map((p) => p.date),
+    ];
+
     const svg = selection
       .append("svg")
-      .datum(data)
+      .datum([spanData, pointData])
       .attr("width", width + margin.right + margin.left)
       .attr("height", height + margin.top + margin.bottom);
 
     const timeScale: ScaleTime<number, number> = d3
       .scaleTime()
-      .domain([
-        d3.min(eventData.map((e) => e.start)) as Date,
-        d3.max(eventData.map((e) => e.end ?? e.start)) as Date,
-      ])
+      .domain([d3.min(allDates) as Date, d3.max(allDates) as Date])
       .range([0, width]);
 
     const graph = svg
@@ -61,7 +66,7 @@ export default (config: TimelineConfig) => {
       }),
     );
 
-    view.call(draw(timeScale, onEventClick, height, showCursor));
+    view.call(draw(timeScale, onClick, height, showCursor));
   }
 
   function chart(selection: d3.Selection<any, any, any, any>): void {
@@ -77,7 +82,7 @@ export default (config: TimelineConfig) => {
 
   function draw(
     timeScale: ScaleTime<number, number>,
-    onEventClick?: (event: TimelineEvent) => void,
+    onClick?: (item: TimelineSpan | TimelinePoint) => void,
     height?: number,
     showCursor?: boolean,
   ) {
@@ -85,9 +90,15 @@ export default (config: TimelineConfig) => {
       selection
         .data(selection.data())
         .call(
-          eventsRenderer({
+          spansRenderer({
             timeScale,
-            onEventClick,
+            onClick,
+          }),
+        )
+        .call(
+          pointsRenderer({
+            timeScale,
+            onClick,
           }),
         )
         .call(

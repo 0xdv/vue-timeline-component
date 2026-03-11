@@ -53,8 +53,8 @@ const events: TimelineEvent[] = [
 ]
 
 const config: TimelineConfig = {
-  onEventClick(event) {
-    console.log('Clicked:', event)
+  onClick(item) {
+    console.log('Clicked:', item)
   },
 }
 </script>
@@ -77,16 +77,27 @@ Then use `<VueTimeline>` anywhere in your templates.
 
 | Prop     | Type               | Required | Description               |
 | -------- | ------------------ | -------- | ------------------------- |
-| `data`   | `TimelineEvent[]`  | Yes      | Array of timeline events  |
+| `data`   | `TimelineSpan[]`   | Yes      | Array of timeline spans   |
+| `points` | `TimelinePoint[]`  | No       | Array of timeline points  |
 | `config` | `TimelineConfig`   | No       | Configuration options     |
 
-### `TimelineEvent`
+### `TimelineSpan`
 
 ```ts
-interface TimelineEvent {
+interface TimelineSpan {
   name: string
   start: Date
   end?: Date
+  [key: string]: unknown
+}
+```
+
+### `TimelinePoint`
+
+```ts
+interface TimelinePoint {
+  date: Date
+  description: string
   [key: string]: unknown
 }
 ```
@@ -99,7 +110,7 @@ interface TimelineConfig {
   viewHeight?: number      // Default: 300
   widthResizable?: boolean  // Default: true
   margin?: { top: number; bottom: number; left: number; right: number }
-  onEventClick?: (event: TimelineEvent) => void
+  onClick?: (item: TimelineSpan | TimelinePoint) => void
   showCursor?: boolean      // Default: true
   romanCenturies?: boolean  // Default: false — show Roman numeral century labels (e.g. XIX, XX, XXI) for century-boundary years
 }

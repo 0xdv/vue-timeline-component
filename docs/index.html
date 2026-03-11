@@ -2,7 +2,7 @@
     <head>
         <title>vue-timeline-component demo</title>
         <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-        <script src="https://unpkg.com/vue-timeline-component@0.2.2/dist/vue-timeline-component.umd.js"></script>
+        <script src="https://unpkg.com/vue-timeline-component@0.2.3/dist/vue-timeline-component.umd.js"></script>
         <style>
             body {
                 font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -43,8 +43,8 @@
                         end: new Date(2025, 5, 30),
                     }],
                     config: {
-                        onEventClick(event) {
-                            alert('Clicked: ' + event.name)
+                        onClick(item) {
+                            alert('Clicked: ' + (item.name || item.description))
                         }
                     }
                 }

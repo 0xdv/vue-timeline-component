@@ -1,7 +1,8 @@
 import type { App, Plugin } from "vue";
 import VueTimeline from "./components/VueTimeline.vue";
 export type {
-  TimelineEvent,
+  TimelineSpan,
+  TimelinePoint,
   TimelineConfig,
   TimelineMargin,
 } from "./graph/types";
