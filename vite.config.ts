@@ -12,6 +12,10 @@ export default defineConfig({
       tsconfigPath: "./tsconfig.json",
     }),
   ],
+  test: {
+    environment: "jsdom",
+    globals: true,
+  },
   build: {
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
