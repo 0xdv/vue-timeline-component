@@ -1,5 +1,11 @@
 import { describe, it, expect } from "vitest";
-import { VueTimeline } from "../index";
+import {
+  VueTimeline,
+  isTimelineSpan,
+  isTimelinePoint,
+  TimelineSpan,
+  TimelinePoint,
+} from "../index";
 import plugin from "../index";
 
 describe("index exports", () => {
@@ -20,8 +26,18 @@ describe("index exports", () => {
       },
     };
 
-    plugin.install(mockApp as any);
+    plugin.install!(mockApp as any);
 
     expect(registered["VueTimeline"]).toBe(VueTimeline);
+  });
+
+  it("exports isTimelineSpan and isTimelinePoint discriminators", () => {
+    const span = new TimelineSpan("A", new Date());
+    const point = new TimelinePoint(new Date(), "B");
+
+    expect(isTimelineSpan(span)).toBe(true);
+    expect(isTimelineSpan(point)).toBe(false);
+    expect(isTimelinePoint(point)).toBe(true);
+    expect(isTimelinePoint(span)).toBe(false);
   });
 });

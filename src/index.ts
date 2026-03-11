@@ -1,10 +1,11 @@
 import type { App, Plugin } from "vue";
 import VueTimeline from "./components/VueTimeline.vue";
-export type {
+export type { TimelineItem, TimelineConfig, TimelineMargin } from "./types";
+export {
   TimelineSpan,
   TimelinePoint,
-  TimelineConfig,
-  TimelineMargin,
+  isTimelineSpan,
+  isTimelinePoint,
 } from "./types";
 
 export { VueTimeline };

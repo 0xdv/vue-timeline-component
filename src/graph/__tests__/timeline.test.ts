@@ -1,10 +1,10 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import * as d3 from "d3";
 import timeline from "../timeline";
-import type { TimelineSpan, TimelinePoint } from "../../types";
+import { TimelineSpan, TimelinePoint } from "../../types";
 
 function makeSpan(name: string, start: string, end: string): TimelineSpan {
-  return { name, start: new Date(start), end: new Date(end) };
+  return new TimelineSpan(name, new Date(start), new Date(end));
 }
 
 describe("timeline", () => {
@@ -105,7 +105,7 @@ describe("timeline", () => {
   it("renders with points data", () => {
     const spans = [makeSpan("A", "2000-01-01", "2001-01-01")];
     const points: TimelinePoint[] = [
-      { date: new Date("2000-06-01"), description: "Event" },
+      new TimelinePoint(new Date("2000-06-01"), "Event"),
     ];
     const sel = d3
       .select(container)

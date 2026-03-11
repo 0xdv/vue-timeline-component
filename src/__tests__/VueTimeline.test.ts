@@ -1,17 +1,18 @@
 import { describe, it, expect } from "vitest";
 import { mount } from "@vue/test-utils";
 import VueTimeline from "../components/VueTimeline.vue";
+import { TimelineSpan, TimelinePoint } from "../types";
 
 describe("VueTimeline component", () => {
   it("renders a div with class vue-timeline", () => {
     const wrapper = mount(VueTimeline, {
       props: {
         data: [
-          {
-            name: "Test",
-            start: new Date("2000-01-01"),
-            end: new Date("2001-01-01"),
-          },
+          new TimelineSpan(
+            "Test",
+            new Date("2000-01-01"),
+            new Date("2001-01-01"),
+          ),
         ],
       },
     });
@@ -23,11 +24,11 @@ describe("VueTimeline component", () => {
     const wrapper = mount(VueTimeline, {
       props: {
         data: [
-          {
-            name: "Test",
-            start: new Date("2000-01-01"),
-            end: new Date("2001-01-01"),
-          },
+          new TimelineSpan(
+            "Test",
+            new Date("2000-01-01"),
+            new Date("2001-01-01"),
+          ),
         ],
       },
       attachTo: document.body,
@@ -39,17 +40,17 @@ describe("VueTimeline component", () => {
     wrapper.unmount();
   });
 
-  it("accepts points prop", async () => {
+  it("accepts points in data prop", async () => {
     const wrapper = mount(VueTimeline, {
       props: {
         data: [
-          {
-            name: "Span",
-            start: new Date("2000-01-01"),
-            end: new Date("2001-01-01"),
-          },
+          new TimelineSpan(
+            "Span",
+            new Date("2000-01-01"),
+            new Date("2001-01-01"),
+          ),
+          new TimelinePoint(new Date("2000-06-01"), "Event"),
         ],
-        points: [{ date: new Date("2000-06-01"), description: "Event" }],
       },
       attachTo: document.body,
     });
@@ -63,11 +64,11 @@ describe("VueTimeline component", () => {
     const wrapper = mount(VueTimeline, {
       props: {
         data: [
-          {
-            name: "Span",
-            start: new Date("2000-01-01"),
-            end: new Date("2001-01-01"),
-          },
+          new TimelineSpan(
+            "Span",
+            new Date("2000-01-01"),
+            new Date("2001-01-01"),
+          ),
         ],
         config: {
           viewHeight: 400,
@@ -86,16 +87,16 @@ describe("VueTimeline component", () => {
     const wrapper = mount(VueTimeline, {
       props: {
         data: [
-          {
-            name: "Period A",
-            start: new Date("2000-01-01"),
-            end: new Date("2001-01-01"),
-          },
-          {
-            name: "Period B",
-            start: new Date("2001-01-01"),
-            end: new Date("2002-01-01"),
-          },
+          new TimelineSpan(
+            "Period A",
+            new Date("2000-01-01"),
+            new Date("2001-01-01"),
+          ),
+          new TimelineSpan(
+            "Period B",
+            new Date("2001-01-01"),
+            new Date("2002-01-01"),
+          ),
         ],
       },
       attachTo: document.body,

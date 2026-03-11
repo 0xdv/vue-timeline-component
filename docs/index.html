@@ -2,7 +2,7 @@
     <head>
         <title>vue-timeline-component demo</title>
         <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-        <script src="https://unpkg.com/vue-timeline-component@0.2.4/dist/vue-timeline-component.umd.js"></script>
+        <script src="https://unpkg.com/vue-timeline-component@0.2.5/dist/vue-timeline-component.umd.js"></script>
         <style>
             body {
                 font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -19,29 +19,19 @@
 
         <script>
           const { createApp } = Vue
-          const { VueTimeline } = VueTimelineComponent
+          const { VueTimeline, TimelineSpan, TimelinePoint } = VueTimelineComponent
 
           createApp({
             components: { VueTimeline },
             data() {
                 return {
-                    events: [{
-                        name: "event 1",
-                        start: new Date(2025, 0, 1),
-                        end: new Date(2025, 0, 10),
-                    },{
-                        name: "event 2",
-                        start: new Date(2025, 0, 5),
-                        end: new Date(2025, 1, 15),
-                    },{
-                        name: "event 3",
-                        start: new Date(2025, 1, 1),
-                        end: new Date(2025, 3, 20),
-                    },{
-                        name: "event 4",
-                        start: new Date(2025, 3, 1),
-                        end: new Date(2025, 5, 30),
-                    }],
+                    events: [
+                        new TimelineSpan("event 1", new Date(2025, 0, 1), new Date(2025, 0, 10)),
+                        new TimelineSpan("event 2", new Date(2025, 0, 5), new Date(2025, 1, 15)),
+                        new TimelineSpan("event 3", new Date(2025, 1, 1), new Date(2025, 3, 20)),
+                        new TimelineSpan("event 4", new Date(2025, 3, 1), new Date(2025, 5, 30)),
+                        new TimelinePoint(new Date(2025, 2, 15), "Milestone"),
+                    ],
                     config: {
                         onClick(item) {
                             alert('Clicked: ' + (item.name || item.description))

@@ -1,6 +1,6 @@
 {
   "name": "vue-timeline-component",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "type": "module",
   "description": "A Vue 3 timeline component powered by D3.js",
   "main": "./dist/vue-timeline-component.umd.js",
@@ -8,9 +8,9 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/vue-timeline-component.es.js",
-      "require": "./dist/vue-timeline-component.umd.js",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/vue-timeline-component.umd.js"
     }
   },
   "files": [
@@ -30,7 +30,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/0xdv/vue-timeline-component"
+    "url": "git+https://github.com/0xdv/vue-timeline-component.git"
   },
   "homepage": "https://github.com/0xdv/vue-timeline-component",
   "bugs": {

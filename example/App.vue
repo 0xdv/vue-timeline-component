@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2>vue-timeline-component</h2>
-    <VueTimeline :data="events" :points="points" :config="config" />
+    <VueTimeline :data="data" :config="config" />
     <p v-if="clicked" style="text-align:center; margin-top:12px">
       Clicked: <strong>{{ clickedLabel }}</strong>
     </p>
@@ -10,26 +10,23 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { VueTimeline } from '../src/index'
-import type { TimelineSpan, TimelinePoint, TimelineConfig } from '../src/index'
+import { VueTimeline, TimelineSpan, TimelinePoint, isTimelineSpan } from '../src/index'
+import type { TimelineConfig, TimelineItem } from '../src/index'
 
-const clicked = ref<TimelineSpan | TimelinePoint | null>(null)
+const clicked = ref<TimelineItem | null>(null)
 const clickedLabel = computed(() => {
   if (!clicked.value) return ''
-  return 'name' in clicked.value ? clicked.value.name : clicked.value.description
+  return isTimelineSpan(clicked.value) ? clicked.value.name : clicked.value.description
 })
 
-const events: TimelineSpan[] = [
-  { name: 'Research', start: new Date(2025, 0, 1), end: new Date(2025, 1, 15) },
-  { name: 'Design', start: new Date(2025, 1, 1), end: new Date(2025, 2, 10) },
-  { name: 'Development', start: new Date(2025, 2, 1), end: new Date(2025, 5, 30) },
-  { name: 'Testing', start: new Date(2025, 5, 1), end: new Date(2025, 7, 15) },
-  { name: 'Launch', start: new Date(2025, 7, 15), end: new Date(2025, 8, 1) },
-]
-
-const points: TimelinePoint[] = [
-  { date: new Date(2025, 1, 15), description: 'Milestone: Research Complete' },
-  { date: new Date(2025, 5, 30), description: 'Milestone: Dev Complete' },
+const data: TimelineItem[] = [
+  new TimelineSpan('Research', new Date(2025, 0, 1), new Date(2025, 1, 15)),
+  new TimelineSpan('Design', new Date(2025, 1, 1), new Date(2025, 2, 10)),
+  new TimelineSpan('Development', new Date(2025, 2, 1), new Date(2025, 5, 30)),
+  new TimelineSpan('Testing', new Date(2025, 5, 1), new Date(2025, 7, 15)),
+  new TimelineSpan('Launch', new Date(2025, 7, 15), new Date(2025, 8, 1)),
+  new TimelinePoint(new Date(2025, 1, 15), 'Milestone: Research Complete'),
+  new TimelinePoint(new Date(2025, 5, 30), 'Milestone: Dev Complete'),
 ]
 
 const config: TimelineConfig = {

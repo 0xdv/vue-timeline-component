@@ -1,17 +1,17 @@
 import { describe, it, expect } from "vitest";
 import layout from "../layout";
-import type { TimelineSpan, TimelinePoint } from "../../types";
+import { TimelineSpan, TimelinePoint } from "../../types";
 
 function span(name: string, start: string, end?: string): TimelineSpan {
-  return {
+  return new TimelineSpan(
     name,
-    start: new Date(start),
-    end: end ? new Date(end) : undefined,
-  };
+    new Date(start),
+    end ? new Date(end) : undefined,
+  );
 }
 
 function point(desc: string, date: string): TimelinePoint {
-  return { description: desc, date: new Date(date) };
+  return new TimelinePoint(new Date(date), desc);
 }
 
 describe("layout", () => {

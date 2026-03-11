@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import * as d3 from "d3";
 import { spansRenderer } from "../renderers/spans";
-import type { TimelineSpan } from "../../types";
+import { TimelineSpan } from "../../types";
 
 function createSvg() {
   const container = document.createElement("div");
@@ -15,7 +15,9 @@ function makeSpan(
   end: string,
   position = 0,
 ): TimelineSpan {
-  return { name, start: new Date(start), end: new Date(end), position };
+  const s = new TimelineSpan(name, new Date(start), new Date(end));
+  s.position = position;
+  return s;
 }
 
 describe("spansRenderer", () => {

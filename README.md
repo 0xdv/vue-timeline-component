@@ -31,25 +31,13 @@ npm install vue-timeline-component
 </template>
 
 <script setup lang="ts">
-import { VueTimeline } from 'vue-timeline-component'
-import type { TimelineEvent, TimelineConfig } from 'vue-timeline-component'
+import { VueTimeline, TimelineSpan, TimelinePoint } from 'vue-timeline-component'
+import type { TimelineConfig } from 'vue-timeline-component'
 
-const events: TimelineEvent[] = [
-  {
-    name: 'event 1',
-    start: new Date(2024, 0, 1),
-    end: new Date(2024, 0, 4),
-  },
-  {
-    name: 'event 2',
-    start: new Date(2024, 0, 2),
-    end: new Date(2024, 0, 5),
-  },
-  {
-    name: 'event 3',
-    start: new Date(2024, 0, 3),
-    end: new Date(2024, 0, 10),
-  },
+const events = [
+  new TimelineSpan('event 1', new Date(2024, 0, 1), new Date(2024, 0, 4)),
+  new TimelineSpan('event 2', new Date(2024, 0, 2), new Date(2024, 0, 5)),
+  new TimelinePoint(new Date(2024, 0, 3), 'milestone'),
 ]
 
 const config: TimelineConfig = {
@@ -75,30 +63,28 @@ Then use `<VueTimeline>` anywhere in your templates.
 
 ## Props
 
-| Prop     | Type               | Required | Description               |
-| -------- | ------------------ | -------- | ------------------------- |
-| `data`   | `TimelineSpan[]`   | Yes      | Array of timeline spans   |
-| `points` | `TimelinePoint[]`  | No       | Array of timeline points  |
-| `config` | `TimelineConfig`   | No       | Configuration options     |
+| Prop     | Type               | Required | Description                              |
+| -------- | ------------------ | -------- | ---------------------------------------- |
+| `data`   | `TimelineItem[]`   | Yes      | Array of spans and/or points             |
+| `config` | `TimelineConfig`   | No       | Configuration options                    |
+
+### `TimelineItem`
+
+A `TimelineItem` is either a `TimelineSpan` or a `TimelinePoint`. The component automatically distinguishes between them.
 
 ### `TimelineSpan`
 
 ```ts
-interface TimelineSpan {
-  name: string
-  start: Date
-  end?: Date
-  [key: string]: unknown
+class TimelineSpan {
+  constructor(name: string, start: Date, end?: Date)
 }
 ```
 
 ### `TimelinePoint`
 
 ```ts
-interface TimelinePoint {
-  date: Date
-  description: string
-  [key: string]: unknown
+class TimelinePoint {
+  constructor(date: Date, description: string)
 }
 ```
 

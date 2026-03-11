@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import * as d3 from "d3";
 import { pointsRenderer } from "../renderers/points";
-import type { TimelinePoint } from "../../types";
+import { TimelinePoint } from "../../types";
 
 function createSvg() {
   const container = document.createElement("div");
@@ -10,7 +10,9 @@ function createSvg() {
 }
 
 function makePoint(desc: string, date: string, position = 0): TimelinePoint {
-  return { description: desc, date: new Date(date), position };
+  const p = new TimelinePoint(new Date(date), desc);
+  p.position = position;
+  return p;
 }
 
 describe("pointsRenderer", () => {
