@@ -5,6 +5,8 @@
 
 A Vue 3 timeline component powered by D3.js.
 
+## [Live Demo](https://0xdv.github.io/vue-timeline-component/index.html)
+
 ## Install
 
 ### npm

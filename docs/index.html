@@ -1,8 +1,8 @@
 <html>
     <head>
         <title>vue-timeline-component demo</title>
-        <script src="https://unpkg.com/vue@2.7.8"></script>
-        <script src="https://unpkg.com/vue-timeline-component@0.1.6"></script>
+        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+        <script src="https://unpkg.com/vue-timeline-component@0.2.0/dist/vue-timeline-component.umd.js"></script>
         <style>
             body {
                 font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -14,38 +14,42 @@
     <body>
         <h3>vue-timeline-component demo</h3>
         <div id="app">
-            <demo :data="events" :config="config"></demo>
+            <vue-timeline :data="events" :config="config"></vue-timeline>
         </div>
-          
+
         <script>
-          new Vue({
-            components: {
-              demo: window['vue-timeline-component']
-            },
+          const { createApp } = Vue
+          const { VueTimeline } = VueTimelineComponent
+
+          createApp({
+            components: { VueTimeline },
             data() {
                 return {
                     events: [{
                         name: "event 1",
-                        start: new Date(2020, 1,1),
-                        end: new Date(2020, 1,4),
+                        start: new Date(2025, 0, 1),
+                        end: new Date(2025, 0, 10),
                     },{
                         name: "event 2",
-                        start: new Date(2020, 1,2),
-                        end: new Date(2020, 1,5),
+                        start: new Date(2025, 0, 5),
+                        end: new Date(2025, 1, 15),
                     },{
                         name: "event 3",
-                        start: new Date(2020, 1,3),
-                        end: new Date(2020, 1,10),
+                        start: new Date(2025, 1, 1),
+                        end: new Date(2025, 3, 20),
+                    },{
+                        name: "event 4",
+                        start: new Date(2025, 3, 1),
+                        end: new Date(2025, 5, 30),
                     }],
                     config: {
                         onEventClick(event) {
-                            console.log('global click')
-                            console.log(event)
+                            alert('Clicked: ' + event.name)
                         }
                     }
                 }
             }
-          }).$mount('#app')
+          }).mount('#app')
         </script>
     </body>
 </html>
