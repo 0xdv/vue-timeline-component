@@ -1,6 +1,6 @@
 {
   "name": "vue-timeline-component",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "type": "module",
   "description": "A Vue 3 timeline component powered by D3.js",
   "main": "./dist/vue-timeline-component.umd.js",
@@ -27,8 +27,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "prepublishOnly": "npm run build",
-    "jsr:publish": "npm run build && npx jsr publish --allow-slow-types",
-    "jsr:publish:dry": "npm run build && npx jsr publish --dry-run --allow-slow-types"
+    "jsr:publish": "npm run build && npx jsr publish",
+    "jsr:publish:dry": "npm run build && npx jsr publish --dry-run"
   },
   "repository": {
     "type": "git",

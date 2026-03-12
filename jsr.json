@@ -1,7 +1,7 @@
 {
   "name": "@0xdv/vue-timeline-component",
-  "version": "0.2.5",
-  "exports": "./dist/vue-timeline-component.es.js",
+  "version": "0.2.6",
+  "exports": "./dist/index.d.ts",
   "publish": {
     "exclude": [
       "!dist",
