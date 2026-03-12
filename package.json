@@ -26,7 +26,9 @@
     "typecheck": "vue-tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "jsr:publish": "npm run build && npx jsr publish --allow-slow-types",
+    "jsr:publish:dry": "npm run build && npx jsr publish --dry-run --allow-slow-types"
   },
   "repository": {
     "type": "git",
