@@ -9,17 +9,23 @@ interface ZoomConfig {
     onClick?: (item: any) => void,
     height?: number,
     showCursor?: boolean,
+    showGrid?: boolean,
   ) => (selection: d3.Selection<any, any, any, any>) => void;
+  onClick?: (item: any) => void;
+  height?: number;
+  showCursor?: boolean;
+  showGrid?: boolean;
 }
 
 export default (config: ZoomConfig): d3.ZoomBehavior<any, any> => {
-  const { timeScale, view, draw } = config;
+  const { timeScale, view, draw, onClick, height, showCursor, showGrid } =
+    config;
 
   return d3.zoom<any, any>().on("zoom", (event: d3.D3ZoomEvent<any, any>) => {
     const { k, x, y } = event.transform;
 
     const scale = d3.zoomIdentity.translate(x, y).scale(k).rescaleX(timeScale);
 
-    view.call(draw(scale));
+    view.call(draw(scale, onClick, height, showCursor, showGrid));
   });
 };

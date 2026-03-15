@@ -22,7 +22,11 @@ function intersectsPoint(point: TimelinePoint, span: TimelineSpan): boolean {
 }
 
 const layout = {
-  generate(spans: TimelineSpan[], points: TimelinePoint[] = []): void {
+  generate(
+    spans: TimelineSpan[],
+    points: TimelinePoint[] = [],
+    maxLevel = 15,
+  ): void {
     spans.forEach((e) => {
       e.duration = e.end ? e.end.getTime() - e.start.getTime() : 0;
     });
@@ -43,8 +47,9 @@ const layout = {
       placed.push(e);
     });
 
-    const maxLevel = 11;
-    spans.forEach((e) => (e.position = maxLevel - (e.level ?? 0)));
+    spans.forEach((e) => {
+      if (e.position === undefined) e.position = maxLevel - (e.level ?? 0);
+    });
 
     // Layout points: avoid overlapping with spans
     points.forEach((pt) => {
@@ -58,7 +63,7 @@ const layout = {
       while (occupiedLevels.has(pt.level)) {
         pt.level++;
       }
-      pt.position = maxLevel - (pt.level ?? 0);
+      if (pt.position === undefined) pt.position = maxLevel - (pt.level ?? 0);
     });
   },
 };

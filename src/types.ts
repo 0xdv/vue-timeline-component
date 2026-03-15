@@ -19,6 +19,8 @@ export class TimelineSpan {
   level?: number;
   /** Horizontal position assigned during layout. */
   position?: number;
+  /** Fill color of the span rectangle (any valid CSS color string). */
+  color?: string;
 
   constructor(name: string, start: Date, end?: Date) {
     this.name = name;
@@ -98,6 +100,10 @@ export interface TimelineConfig {
   onClick?: (item: TimelineSpan | TimelinePoint) => void;
   /** Show a vertical cursor line that follows the mouse. */
   showCursor?: boolean;
+  /** Show vertical grid lines aligned with axis ticks. */
+  showGrid?: boolean;
   /** Label century axis ticks using Roman numerals. */
   romanCenturies?: boolean;
+  /** Maximum number of layout levels (default: 15). Controls how many rows spans can occupy. */
+  maxLevel?: number;
 }

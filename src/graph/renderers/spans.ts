@@ -13,7 +13,9 @@ export function spansRenderer(config: RenderConfig) {
 
     const spans = selection
       .selectAll<SVGGElement, TimelineSpan>("g.span")
-      .data(selection.data()[0][0] as TimelineSpan[]);
+      .data(selection.data()[0][0] as TimelineSpan[], (d: any) => d.name);
+
+    spans.exit().transition().duration(200).style("opacity", 0).remove();
 
     const g = spans
       .enter()
@@ -24,9 +26,12 @@ export function spansRenderer(config: RenderConfig) {
         (d: TimelineSpan) =>
           `translate(${timeScale(d.start)} ${(d.position ?? 0) * 22})`,
       )
+      .style("opacity", 0)
       .on("click", (_event: MouseEvent, d: TimelineSpan) => {
         if (onClick) onClick(d);
       });
+
+    g.transition().duration(300).style("opacity", 1);
 
     // Add tooltip
     g.append("title").text((d: TimelineSpan) => d.name);
@@ -36,7 +41,7 @@ export function spansRenderer(config: RenderConfig) {
         d.end ? timeScale(d.end) - timeScale(d.start) : 10,
       )
       .attr("height", 20)
-      .attr("fill", "rgba(85, 187, 238, 0.2)")
+      .attr("fill", (d: TimelineSpan) => d.color ?? "rgba(85, 187, 238, 0.2)")
       .attr("ry", 6);
 
     // Clip path per span so text is clipped inside the span

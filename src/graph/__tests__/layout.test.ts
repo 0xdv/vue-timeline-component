@@ -56,9 +56,9 @@ describe("layout", () => {
 
     it("assigns position based on maxLevel minus level", () => {
       const spans = [span("A", "2000-01-01", "2000-06-01")];
-      layout.generate(spans);
+      layout.generate(spans, [], 15);
 
-      expect(spans[0].position).toBe(11 - (spans[0].level ?? 0));
+      expect(spans[0].position).toBe(15 - (spans[0].level ?? 0));
     });
 
     it("sorts spans by duration descending before placement", () => {
