@@ -1,44 +1,206 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>vue-timeline-component demo</title>
         <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
         <script src="https://unpkg.com/vue-timeline-component@0.2.8/dist/vue-timeline-component.umd.js"></script>
         <style>
+            *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
             body {
-                font-family: 'Avenir', Helvetica, Arial, sans-serif;
+                font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+                background: #f0f4f8;
+                color: #2d3748;
+                min-height: 100vh;
+                padding: 32px 16px;
+            }
+
+            .page {
+                max-width: 980px;
+                margin: 0 auto;
+            }
+
+            header {
                 text-align: center;
-                background-color: #f9f9f9;
+                margin-bottom: 40px;
+            }
+
+            header h1 {
+                font-size: 1.8rem;
+                font-weight: 700;
+                color: #1a202c;
+                letter-spacing: -0.5px;
+            }
+
+            header p {
+                margin-top: 8px;
+                color: #718096;
+                font-size: 0.95rem;
+            }
+
+            .card {
+                background: #fff;
+                border-radius: 12px;
+                box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+                padding: 24px 24px 16px;
+                margin-bottom: 24px;
+            }
+
+            .card h2 {
+                font-size: 1rem;
+                font-weight: 600;
+                color: #4a5568;
+                margin-bottom: 16px;
+                text-transform: uppercase;
+                letter-spacing: 0.6px;
+            }
+
+            .legend {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 12px;
+                margin-top: 12px;
+            }
+
+            .legend-item {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 0.82rem;
+                color: #4a5568;
+            }
+
+            .legend-dot {
+                width: 12px;
+                height: 12px;
+                border-radius: 3px;
+                flex-shrink: 0;
+            }
+
+            .info-bar {
+                text-align: center;
+                padding: 10px;
+                background: #ebf8ff;
+                border-radius: 8px;
+                font-size: 0.9rem;
+                color: #2b6cb0;
+                min-height: 36px;
+                margin-top: 8px;
+                transition: opacity 0.2s;
+            }
+
+            .info-bar:empty::before { content: 'Click any item to see details'; color: #90cdf4; }
+
+            .badge {
+                display: inline-block;
+                font-size: 0.72rem;
+                padding: 2px 8px;
+                border-radius: 999px;
+                font-weight: 600;
+                background: #c3dafe;
+                color: #3730a3;
+                vertical-align: middle;
+                margin-left: 6px;
             }
         </style>
     </head>
     <body>
-        <h3>vue-timeline-component demo</h3>
-        <div id="app">
-            <vue-timeline :data="events" :config="config"></vue-timeline>
+        <div class="page" id="app">
+
+            <header>
+                <h1>vue-timeline-component <span class="badge">v0.2.8</span></h1>
+                <p>Interactive SVG timeline with zoom, grid, cursor &amp; click events.</p>
+            </header>
+
+            <!-- Project Roadmap -->
+            <div class="card">
+                <h2>Project Roadmap 2025</h2>
+                <vue-timeline :data="roadmap" :config="roadmapConfig"></vue-timeline>
+                <div class="legend">
+                    <div class="legend-item"><div class="legend-dot" style="background:#6366f1aa"></div> Planning</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#ec4899aa"></div> Design</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#10b981aa"></div> Development</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#f59e0baa"></div> QA / Testing</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#ef4444aa"></div> Launch</div>
+                </div>
+                <div class="info-bar">{{ roadmapClicked }}</div>
+            </div>
+
+            <!-- Space Exploration -->
+            <div class="card">
+                <h2>Space Exploration Milestones</h2>
+                <vue-timeline :data="space" :config="spaceConfig"></vue-timeline>
+                <div class="info-bar">{{ spaceClicked }}</div>
+            </div>
+
         </div>
 
         <script>
           const { createApp } = Vue
           const { VueTimeline, TimelineSpan, TimelinePoint } = VueTimelineComponent
 
+          function span(name, start, end, color) {
+              return Object.assign(new TimelineSpan(name, start, end), { color })
+          }
+
           createApp({
             components: { VueTimeline },
             data() {
                 return {
-                    events: [
-                        new TimelineSpan("event 1", new Date(2025, 0, 1), new Date(2025, 0, 10)),
-                        new TimelineSpan("event 2", new Date(2025, 0, 5), new Date(2025, 1, 15)),
-                        new TimelineSpan("event 3", new Date(2025, 1, 1), new Date(2025, 3, 20)),
-                        new TimelineSpan("event 4", new Date(2025, 3, 1), new Date(2025, 5, 30)),
-                        new TimelinePoint(new Date(2025, 2, 15), "Milestone"),
+                    roadmapClicked: '',
+                    spaceClicked: '',
+
+                    roadmap: [
+                        span("Planning",  new Date(2025,  0,  1), new Date(2025,  1, 15), 'rgba(99,102,241,0.4)'),
+                        span("Design",    new Date(2025,  1,  1), new Date(2025,  3,  1), 'rgba(236,72,153,0.4)'),
+                        span("Backend",   new Date(2025,  2, 15), new Date(2025,  6, 30), 'rgba(16,185,129,0.5)'),
+                        span("Frontend",  new Date(2025,  3,  1), new Date(2025,  7, 15), 'rgba(16,185,129,0.3)'),
+                        span("QA",        new Date(2025,  6,  1), new Date(2025,  8, 15), 'rgba(245,158,11,0.5)'),
+                        span("Beta",      new Date(2025,  8,  1), new Date(2025,  9, 15), 'rgba(245,158,11,0.3)'),
+                        span("Launch",    new Date(2025,  9, 15), new Date(2025, 10, 15), 'rgba(239,68,68,0.5)'),
+                        new TimelinePoint(new Date(2025,  1, 15), "Kickoff"),
+                        new TimelinePoint(new Date(2025,  4, 30), "v0.1 internal release"),
+                        new TimelinePoint(new Date(2025,  8,  1), "Beta launch"),
+                        new TimelinePoint(new Date(2025,  9, 15), "GA release 🚀"),
                     ],
-                    config: {
-                        onClick(item) {
-                            alert('Clicked: ' + (item.name || item.description))
-                        }
-                    }
+
+                    space: [
+                        span("Vostok programme",  new Date(1961, 3, 12), new Date(1963, 5, 16),  'rgba(99,102,241,0.4)'),
+                        span("Gemini programme",  new Date(1964, 3,  8), new Date(1966,10, 15),  'rgba(16,185,129,0.4)'),
+                        span("Apollo programme",  new Date(1968,10, 11), new Date(1972,11, 19),  'rgba(245,158,11,0.5)'),
+                        span("Space Shuttle era", new Date(1981, 3, 12), new Date(2011, 6, 21),  'rgba(236,72,153,0.35)'),
+                        span("ISS operations",    new Date(1998,10, 20), new Date(2024,11, 31),  'rgba(59,130,246,0.3)'),
+                        span("Commercial Crew",   new Date(2020, 4, 30), new Date(2024,11, 31),  'rgba(239,68,68,0.4)'),
+                        new TimelinePoint(new Date(1969,  6, 20), "Moon landing 🌕"),
+                        new TimelinePoint(new Date(1986,  0, 28), "Challenger disaster"),
+                        new TimelinePoint(new Date(2003,  1,  1), "Columbia disaster"),
+                        new TimelinePoint(new Date(2012,  4, 25), "SpaceX Dragon docks ISS"),
+                        new TimelinePoint(new Date(2021,  6, 11), "Branson reaches space"),
+                    ],
                 }
-            }
+            },
+            computed: {
+                roadmapConfig() {
+                    return {
+                        viewHeight: 260,
+                        maxLevel: 8,
+                        showGrid: true,
+                        showCursor: true,
+                        onClick: (item) => { this.roadmapClicked = item.name || item.description },
+                    }
+                },
+                spaceConfig() {
+                    return {
+                        viewHeight: 280,
+                        maxLevel: 8,
+                        showGrid: true,
+                        showCursor: true,
+                        onClick: (item) => { this.spaceClicked = item.name || item.description },
+                    }
+                },
+            },
           }).mount('#app')
         </script>
     </body>

@@ -18,8 +18,20 @@ export default (config: TimelineConfig) => {
   let _height: number | undefined;
   let _showCursor: boolean | undefined;
   let _showGrid: boolean | undefined;
+  let _initialized = false;
 
   function init(selection: d3.Selection<any, any, any, any>): void {
+    const {
+      widthResizable = true,
+      margin = { top: 0, bottom: 30, left: 15, right: 15 },
+    } = config;
+
+    if (_initialized && widthResizable) {
+      const clientWidth = selection.node()?.clientWidth ?? 0;
+      if (clientWidth <= margin.left + margin.right) return;
+    }
+    _initialized = true;
+
     selection.selectAll("svg").remove();
 
     const data = selection.data();
@@ -31,8 +43,6 @@ export default (config: TimelineConfig) => {
     let {
       viewWidth = 800,
       viewHeight = 200,
-      widthResizable = true,
-      margin = { top: 0, bottom: 30, left: 15, right: 15 },
       onClick,
       showCursor = true,
       showGrid = false,
